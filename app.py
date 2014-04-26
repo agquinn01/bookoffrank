@@ -19,7 +19,7 @@ dossierItems['06'] = {'image':'static/img/dossier/Dossier016.jpg', 'index':'06',
 dossierItems['07'] = {'image':'static/img/dossier/Dossier017.jpg', 'index':'07','title':'SNAKE AND MOLE', 'route':'/item7', 'chapter':'2'}
 dossierItems['08'] = {'image':'static/img/dossier/Dossier018.jpg', 'index':'08','title':'BEE AND OWL', 'route':'/item8', 'chapter':'2'}
 dossierItems['09'] = {'image':'static/img/dossier/Dossier019.jpg', 'index':'09','title':'SALLY', 'route':'/item9', 'chapter':'2'}
-dossierItems['10'] = {'image':'static/img/dossier/Dossier0110.jpg', 'index':'10','title':'CALICO', 'route':'/item10', 'chapter':'2'}
+dossierItems['10'] = {'image':'static/img/dossier/Dossier0110.jpg', 'index':'10','title':'CALICO', 'route':'/item10', 'chapter':'2', 'related':['01','02','03','04','05','09','11']}
 dossierItems['11'] = {'image':'static/img/dossier/MedCityCalico.png', "index":"11",'title':'CALICO WEB 1', 'route':'/item11', 'chapter':'2'}
 
 
@@ -173,12 +173,20 @@ def item9():
 @app.route("/item10")
 def item10():
 	foundItems['10']['value'] = True
-	dossierItems['10'] = {'image':'static/img/dossier/Dossier0110.jpg', 'index':'10','title':'CALICO', 'route':'/item10', 'chapter':'2'}
+	dossierItems['10'] = {'image':'static/img/dossier/Dossier0110.jpg', 'index':'10','title':'CALICO', 'route':'/item10', 'chapter':'2', 'related':['01','02','03','04','05','09','11']}
+	relatedItems = []
+
+	for item in dossierItems['10']['related']:
+		relatedItems.append(dossierItems[item])
+
+	relatedItems.sort(key=operator.itemgetter('index'))
+
 	templateData = {
 	'title' : dossierItems['10']['title'],
-	'image' : dossierItems['10']['image']
+	'image' : dossierItems['10']['image'],
+	'relatedItems' : relatedItems
 	}
-	return render_template("item.html", **templateData)
+	return render_template("item1.html", **templateData)
 
 @app.route("/item11")
 def item11():
