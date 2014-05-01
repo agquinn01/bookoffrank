@@ -1,4 +1,5 @@
 import os, datetime
+import requests
 from flask import Flask, request # Retrieve Flask, our framework
 from flask import render_template
 import operator
@@ -54,21 +55,30 @@ foundItems['11'] = {"value":False,"index":"11", 'chapter':'2'}
 @app.route("/bof1")
 def text():
 
-	currentPage = request.args.get('q','2')
-	nextPage = str(int(currentPage)+1)
-	if currentPage == "1":
-		prevPage = "1"
-	else:
-		prevPage = str(int(currentPage)-1)
+	newMark = ''
+	bookMark = request.args.get('q','query')
+	if bookMark != 'query':
+		newMark = bookMark
+
+
+	# nextPage = str(int(currentPage)+1)
+	# if currentPage == "1":
+	# 	prevPage = "1"
+	# else:
+	# 	prevPage = str(int(currentPage)-1)
+
+	# query = request.args.get('q','#peanuts')
 
 
 
 	templateData = {
 	'title' : 'The Book of Frank',
 	'page' : "1",
-	'currentPage': currentPage,
-	'nextPage' : nextPage,
-	'prevPage' : prevPage
+	# 'currentPage': currentPage,
+	'newMark' : newMark,
+	'bookMark': bookMark,
+	# 'nextPage' : nextPage,
+	# 'prevPage' : prevPage
 	}
 	return render_template("bof1_test.html", **templateData)
 
