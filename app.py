@@ -14,6 +14,7 @@ dossierItems['00'] = {'image':'static/img/dossier/Dossier_blank.jpg', 'index':'0
 dossierItems['01'] = {'image':'static/img/dossier/Dossier01.jpg', 'index':'01','title':'STEVEN', 'route':'/item1', 'chapter':'1'}
 dossierItems['02'] = {'image':'static/img/dossier/Dossier012.jpg', 'index':'02','title':'FRANK', 'route':'/item2', 'chapter':'1'}
 dossierItems['03'] = {'image':'static/img/dossier/Dossier013.jpg', 'index':'03','title':'TOKI', 'route':'/item3', 'chapter':'1'}
+dossierItems['03.1'] = {'image':'static/img/dossier/Toki_vid.png', 'index':'03.1','title':'TOKI_VID', 'route':'/item3_1', 'chapter':'1', 'video':'http://vimeo.com/93462324'}
 dossierItems['04'] = {'image':'static/img/dossier/Dossier014.jpg', 'index':'04','title':'PILOT DETAIL', 'route':'/item4', 'chapter':'1'}
 dossierItems['05'] = {'image':'static/img/dossier/Dossier015.jpg', 'index':'05','title':'PILOT HISTORY', 'route':'/item5', 'chapter':'2'}
 dossierItems['06'] = {'image':'static/img/dossier/Dossier016.jpg', 'index':'06','title':'FOX', 'route':'/item6', 'chapter':'2'}
@@ -31,6 +32,7 @@ foundItems = {}
 foundItems['01'] = {"value":False,"index":"01", 'chapter':'1'}
 foundItems['02'] = {"value":False,"index":"02", 'chapter':'1'}
 foundItems['03'] = {"value":False,"index":"03", 'chapter':'1'}
+foundItems['03.1'] = {"value":False,"index":"03.1", 'chapter':'1'}
 foundItems['04'] = {"value":False,"index":"04", 'chapter':'1'}
 foundItems['05'] = {"value":False,"index":"05", 'chapter':'2'}
 foundItems['06'] = {"value":False,"index":"06", 'chapter':'2'}
@@ -119,6 +121,17 @@ def item3():
 	'image' : dossierItems['03']['image']
 	}
 	return render_template("item.html", **templateData)
+
+@app.route("/item3_1")
+def item301():
+	foundItems['03.1']['value'] = True
+	dossierItems['03.1'] = {'image':'static/img/dossier/Toki_vid.png', 'index':'03.1','title':'TOKI_VID', 'route':'/item3_1', 'chapter':'1', 'video':'http://vimeo.com/93462324'}
+	templateData = {
+	'title' : dossierItems['03.1']['title'],
+	'image' : dossierItems['03.1']['image'],
+	'video' : dossierItems['03.1']['video']
+	}
+	return render_template("video_item.html", **templateData)
 
 @app.route("/item4")
 def item4():

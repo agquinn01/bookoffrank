@@ -2,7 +2,10 @@
 <html>
 	<head>
 		<link rel="shortcut icon" href="/static/img/bunnyfavicon2.ico">
+
+
 		<style>
+
 			h1 { color:black; font-family:"Georgia", serif; }
 			h2 { color:black; font-family:"Georgia", serif; }
 			p { color:black; font-family: "Georgia", serif; }
@@ -18,7 +21,7 @@
 			}
 			.boxed {
 				position: relative;
-				top: 38px;
+				top: 20px;
 				spacing: 0px;
 				border: 0px;
 				padding: 40px;
@@ -61,24 +64,102 @@
 	} -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js">
 	</script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="jquery.big-slide.js"></script>
+	<script>
+	/*! bigSlide - v0.4.3 - 2014-01-25
+	* http://ascott1.github.io/bigSlide.js/
+	* Copyright (c) 2014 Adam D. Scott; Licensed MIT */
+	(function($) {
+	  'use strict';
+
+	  $.fn.bigSlide = function(options) {
+
+	    var settings = $.extend({
+	      'menu': ('#menu'),
+	      'push': ('.push'),
+	      'side': 'left',
+	      'menuWidth': '15.625em',
+	      'speed': '300'
+	    }, options);
+
+	    var menuLink = this,
+	        menu = $(settings.menu),
+	        push = $(settings.push),
+	        width = settings.menuWidth;
+
+	    var positionOffScreen = {
+	      'position': 'fixed',
+	      'top': '0',
+	      'bottom': '0',
+	      'settings.side': '-' + settings.menuWidth,
+	      'width': settings.menuWidth,
+	      'height': '100%'
+	    };
+
+	    var animateSlide = {
+	      '-webkit-transition': settings.side + ' ' + settings.speed + 'ms ease',
+	      '-moz-transition': settings.side + ' ' + settings.speed + 'ms ease',
+	      '-ms-transition': settings.side + ' ' + settings.speed + 'ms ease',
+	      '-o-transition': settings.side + ' ' + settings.speed + 'ms ease',
+	      'transition': settings.side + ' ' + settings.speed + 'ms ease'
+	    };
+
+	    menu.css(positionOffScreen);
+	    push.css(settings.side, '0');
+	    menu.css(animateSlide);
+	    push.css(animateSlide);
+
+	    menu._state = 'closed';
+
+	    menu.open = function() {
+	      menu._state = 'open';
+	      menu.css(settings.side, '0');
+	      push.css(settings.side, width);
+	    };
+
+	    menu.close = function() {
+	      menu._state = 'closed';
+	      menu.css(settings.side, '-' + width);
+	      push.css(settings.side, '0');
+	    };
+
+	    menuLink.on('click.bigSlide', function(e) {
+	      e.preventDefault();
+	      if (menu._state === 'closed') {
+	        menu.open();
+	      } else {
+	        menu.close();
+	      }
+	    });
+
+	    menuLink.on('touchend', function(e){
+	      menuLink.trigger('click.bigSlide');
+	      e.preventDefault();
+	    });
+
+	    return menu;
+
+	  };
+
+	}(jQuery));
+	</script>
+
 	<script>
 
 
 	$(document).ready(function(){
 		// $changePage(currentPage)
 		var lastPage = $(".page").last().data("page");
-		//window.location.hash = "#1"
+		window.location.hash = "#1"
 		var hash = window.location.hash;
 		hash = hash.substring('1');
 		var currentPage = parseInt(hash)
 		if (!currentPage) currentPage = 1;
-		// console.log(hash)
-		// console.log(currentPage)
-		changePage(currentPage);
-		document.getElementById("mybookmark").value = currentPage;
-		// document.getElementById('mycurrentpage').value = currentPage;
+		console.log(hash)
+		console.log(currentPage)
 		// $(".page").hide();
-		window.location.hash = "#" + currentPage;
+		// window.location.hash = "#" + currentPage;
 	  $("#prev").click(function(){
 	  	if (currentPage-1 > 0){
 	  		currentPage --;
@@ -86,36 +167,20 @@
 	  	}
 	  });
 	  $("#next").click(function(){
-	  	// console.log("hello")
+	  	console.log("hello")
 	  	if (currentPage+1 <= lastPage) {
 	  		currentPage ++;
 	  		changePage(currentPage);
 	  	}
 	  });
-	  $("#mybookmark").click(function(){
-	  	console.log("bookmark")
-	  	// hash = hash.substring('2');
-	  	changePage(currentPage);
-	  	// document.getElementById("mybookmark").value = currentPage;
-	  });
-	  $("#gotobookmark").click(function(){
-	  	var newMark = {{ newMark }}
-	  	console.log("newMark" + " " + newMark)
-	  	changePage(newMark);
-	  	document.getElementById("gotobookmark").value = newMark;
-	  	currentPage = newMark;
-	  	document.getElementById("mybookmark").value = currentPage;
-	  	document.getElementById('mycurrentpage').value = currentPage;
-	  });
 	  function changePage(page) {
 	  	$(".page").hide();
 	  	$(".page[data-page='"+page+"']").show();
 	  	window.location.hash = "#" + page;
-	  	document.getElementById("mybookmark").value = currentPage;
-	  	document.getElementById('mycurrentpage').value = currentPage;
-	  	console.log(currentPage)
-	  	console.log("bookmark" + " " + " {{ newMark }} ")
 	  }
+
+	$('.menu-link').bigSlide();
+
 	});
 
 	</script>
@@ -133,21 +198,20 @@
 					<a href="/list"><img src="/static/img/dossier.png" alt="dossier" height="40" padding="0"></a>
 				</td>
 				<td align="right" valign="center"width="33.33%">
-					<div class="bookmark">
-						<form>
-				<!-- <input type="hidden" name="q" value="{{query}}">  -->
-						<button id="mybookmark" name="q" value=" hello">Add bookmark</button>
-						<button id="gotobookmark" name="q" value="hello">Go to bookmark</button>
-				<!-- <p><input type="submit" name="q" value=" hello " id="mybookmark">Bookmark</input> 
-					Bookmark Page {{ newMark }} 
-					<div class="gotobookmark">
-						<button id="gotobookmark" name="q" value= "hello"><img src="/static/img/logo.png" height="30"></button>
-					</div> -->
-					<!-- <a href="/bof1?q={{ bookMark }}">Go to your bookmark</a></p> --> </form>
-					</div>
 				</td>
 		</table>
 	</center>
+	<a href="#menu" class="menu-link">&#9776;</a>
+		<nav id="menu" class="panel" role="navigation">
+				    <ul>
+				        <li><a href="#">Home</a></li>
+				        <li><a href="#">The Ballad of El Goodo</a></li>
+				        <li><a href="#">Thirteen</a></li>
+				        <li><a href="#">September Gurls</a></li>
+				        <li><a href="#">What's Going Ahn</a></li>
+				    </ul>
+			</nav>
+
 		<!-- <table width="100%" height="30px" border="0" cellpadding="0">
 			<tr>
 				<td width="50%" align="left">
@@ -169,30 +233,7 @@
 				</td>
 			</tr>
 		</table> -->
-		<!-- <form method="get" action="">
-			<input type="text" name="txt" />
-			<input type="hidden" name="myinput" value="myvalue" />
-			<input type="submit" name="submit" />
-		</form> -->
-<!-- 		<center>
-			<div class="bookmark">
-			<form>
-				<p><input type="submit" name="q" value=" hello " id="mybookmark">Bookmark me!</input> 
-					Bookmark Page {{ newMark }} 
-					<div class="gotobookmark">
-						<button id="gotobookmark" name="q" value= "hello"><img src="/static/img/logo.png" height="30"></button>
-					</div>
-					</form>
-			</div>
-		</center> -->
-
-		<center>
-			<p><form><input type="submit" id="mycurrentpage" name="mypage" value="page"></form></p>
-		</center>
-		
-		
-
-			<div class="page_prev">
+		<div class="page_prev">
 			<button id="prev"><img src="/static/img/book/page_prev.png" height="30"></button>
 		</div>
 		<div class="page_next">
