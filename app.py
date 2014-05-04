@@ -42,6 +42,9 @@ foundItems['09'] = {"value":False,"index":"09", 'chapter':'2'}
 foundItems['10'] = {"value":False,"index":"10", 'chapter':'2'}
 foundItems['11'] = {"value":False,"index":"11", 'chapter':'2'}
 
+global myPage
+myPage = '1'
+
 #This is a model for how a route should work
 # @app.route("/item1")
 # def item1():
@@ -58,7 +61,19 @@ foundItems['11'] = {"value":False,"index":"11", 'chapter':'2'}
 def text():
 
 	newMark = ''
+	# myPage = '11'
+	global myPage
+	prevPage = ''
+	myCurrentPage = request.args.get('changepage', 'help')
+	if myCurrentPage != 'help':
+		myPage = myCurrentPage
+
+
 	bookMark = request.args.get('q','query')
+	# myCurrentPage = request.args.get('mycurrentpage','query')
+	# if myCurrentPage != 'query':
+	# 	myPage = myCurrentPage
+
 	if bookMark != 'query':
 		newMark = bookMark
 
@@ -79,6 +94,7 @@ def text():
 	# 'currentPage': currentPage,
 	'newMark' : newMark,
 	'bookMark': bookMark,
+	'myPage' : myPage,
 	# 'nextPage' : nextPage,
 	# 'prevPage' : prevPage
 	}
@@ -296,6 +312,8 @@ def dc2():
 
 @app.route("/list")
 def list():
+
+
 	# currentItems = []
 	# chapter1Items = []
 	# chapter2Items = []
@@ -320,6 +338,7 @@ def list():
 	# 	# print foundItems
 
 	templateData = {
+	'myPage' : myPage,
 	'title' : 'This is the list page'
 	# 'chapter1Items' : chapter1Items,
 	# 'chapter2Items' : chapter2Items
